@@ -44,7 +44,7 @@ export class QuizComponent {
     this.questionChange.emit(question);
   }
 
-  public trackByFn(_: number, item: IQuestion) {
-    return item.index;
+  public trackByFn(index: number, _: IQuestion) {
+    return index;
   }
 }

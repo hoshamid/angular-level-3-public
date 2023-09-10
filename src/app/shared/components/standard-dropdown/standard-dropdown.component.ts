@@ -90,8 +90,8 @@ export class StandardDropdownComponent implements OnChanges {
     this.valueToSearch$.next(valueToSearch);
   }
 
-  public trackByFn(_: number, item: IKeyValue) {
-    return item.key;
+  public trackByFn(index: number, _: IKeyValue) {
+    return index;
   }
 
   private getReplacedText(text: string, valueToSearch: string) {
