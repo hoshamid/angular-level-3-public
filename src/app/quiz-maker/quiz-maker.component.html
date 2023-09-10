@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-sm-11">
+    <app-standard-dropdown *ngIf="categories$ | async as categories" [items]="categories" placeholder="Select category"
+      [(selectedOption)]="selectedCategory"></app-standard-dropdown>
+
+    <app-standard-dropdown *ngIf="selectedCategory?.subCategories as subCategories" [items]="subCategories"
+      placeholder="Select sub category" [(selectedOption)]="selectedSubCategory"></app-standard-dropdown>
+
+    <select #difficulty id="difficultySelect">
+      <option>Select difficulty</option>
+      <option>Easy</option>
+      <option>Medium</option>
+      <option>Hard</option>
+    </select>
+    <button class="primary" id="createBtn" (click)="onQuizCreate(difficulty.value)">
+      Create
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <app-quiz [questions]="questions$ | async" (questionChange)="onQuestionChange($event)"></app-quiz>
+</div>

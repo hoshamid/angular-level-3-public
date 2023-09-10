@@ -1,0 +1,9 @@
+<input #searchBox id="searchBox" type="search" (click)="onSearchBoxClick()"
+  (input)="onSearchValueChange(searchBox.value)" [value]="searchBoxValue" [placeholder]="placeholder"
+  autocomplete="off" />
+
+<div class="select" [class.select-visible]="opened" [class.select-hidden]="!opened">
+  <ng-container *ngFor="let item of items$ | async; trackBy: trackByFn">
+    <div class="option" [id]="item.key" [innerHtml]="item.innerHtml" (click)=" onOptionClick(item)"></div>
+  </ng-container>
+</div>
