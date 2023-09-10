@@ -36,7 +36,7 @@ export class QuizComponent {
   @Output() public questionChange = new EventEmitter<IQuestion>();
 
   public onAnswersSubmit(): void {
-    this.quizService.computeScore(this.questions ?? [], this.userAnswers);
+    this.quizService.computeScore(this.questionsToDisplay ?? [], this.userAnswers);
     this.router.navigateByUrl('/result');
   }
 
