@@ -22,15 +22,8 @@ export class QuizComponent {
       return;
     }
 
-    const changedQuestion = questions_.find((question) => question.changed);
-    if (changedQuestion) {
-      this.questionsToDisplay[changedQuestion.index] = changedQuestion;
-      this.displayChangedQuestionButton = false;
-      return;
-    }
-
-    this.displayChangedQuestionButton = true;
     this.questionsToDisplay = questions_;
+    this.displayChangedQuestionButton = !questions_.some((question) => question.changed);
   }
 
   @Output() public questionChange = new EventEmitter<IQuestion>();
