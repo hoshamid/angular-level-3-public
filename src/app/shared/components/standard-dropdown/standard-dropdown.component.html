@@ -4,6 +4,6 @@
 
 <div class="select" [class.select-visible]="opened" [class.select-hidden]="!opened">
   <ng-container *ngFor="let item of items$ | async; trackBy: trackByFn">
-    <div class="option" [id]="item.key" [innerHtml]="item.innerHtml" (click)=" onOptionClick(item)"></div>
+    <div class="option" [innerHtml]="item.innerHtml" (click)=" onOptionClick(item)"></div>
   </ng-container>
 </div>

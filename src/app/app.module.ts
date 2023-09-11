@@ -12,20 +12,8 @@ import { QuizComponent } from './quiz/quiz.component';
 import { StandardDropdownComponent } from './shared/components/standard-dropdown/standard-dropdown.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    QuizMakerComponent,
-    QuizComponent,
-    QuestionComponent,
-    AnswersComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    StandardDropdownComponent,
-  ],
+  declarations: [AppComponent, QuizMakerComponent, QuizComponent, QuestionComponent, AnswersComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, StandardDropdownComponent],
   providers: [],
   bootstrap: [AppComponent],
 })

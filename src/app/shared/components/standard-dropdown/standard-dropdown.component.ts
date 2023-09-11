@@ -1,12 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, debounceTime, of, switchMap, tap } from 'rxjs';
-
-interface IKeyValue {
-  key: any;
-  value: any;
-  innerHtml?: string;
-}
+import { IDropdownOption } from './models/dropdown-option';
 
 @Component({
   selector: 'app-standard-dropdown',
@@ -18,43 +13,27 @@ interface IKeyValue {
 })
 export class StandardDropdownComponent implements OnChanges {
   private valueToSearch$ = new BehaviorSubject<string>('');
-  private itemList: IKeyValue[] = [];
 
   public searchBoxValue: string = '';
   public opened: boolean = false;
 
   @ViewChild('searchBox', { static: true }) private searchBox!: ElementRef;
 
-  @Input() public bindName: string = 'name';
-  @Input() public bindValue: string = 'id';
+  @Input() public items: IDropdownOption[] = [];
   @Input() public placeholder: string = 'Select an option';
+  @Input() public selectedOption: IDropdownOption | undefined;
+  @Output() public selectedOptionChange = new EventEmitter<IDropdownOption>();
 
-  @Input() public set items(items: any[]) {
-    const itemList = items ?? [];
-    this.itemList = itemList.map((item) => {
-      const singleItem: IKeyValue = {
-        ...item,
-        key: item[this.bindValue],
-        value: item[this.bindName],
-      };
-
-      return singleItem;
-    });
-  }
-
-  @Input() public selectedOption: any;
-  @Output() public selectedOptionChange = new EventEmitter<any>();
-
-  public items$: Observable<IKeyValue[]> = this.valueToSearch$.pipe(
+  public items$: Observable<IDropdownOption[]> = this.valueToSearch$.pipe(
     debounceTime(100),
     tap((valueToSearch) => {
       this.searchBoxValue = valueToSearch;
     }),
     switchMap((valueToSearch) => {
-      const foundItems = this.itemList
-        .filter((item) => item.value.toLowerCase().includes(valueToSearch.toLowerCase()))
+      const foundItems = this.items
+        .filter((item) => item.name.toLowerCase().includes(valueToSearch.toLowerCase()))
         .map((item) => {
-          const name = this.getReplacedText(item.value, valueToSearch);
+          const name = this.getReplacedText(item.name, valueToSearch);
           return {
             ...item,
             innerHtml: name,
@@ -76,27 +55,22 @@ export class StandardDropdownComponent implements OnChanges {
     this.opened = true;
   }
 
-  public onOptionClick(item: IKeyValue) {
-    this.valueToSearch$.next(item.value);
-
-    delete item.innerHtml;
-    delete item.key;
-    delete item.value;
-
-    this.selectedOptionChange.emit(item);
+  public onOptionClick(option: IDropdownOption) {
+    this.valueToSearch$.next(option.name);
+    this.selectedOptionChange.emit(option);
   }
 
   public onSearchValueChange(valueToSearch: string) {
     this.valueToSearch$.next(valueToSearch);
   }
 
-  public trackByFn(index: number, _: IKeyValue) {
+  public trackByFn(index: number, _: IDropdownOption) {
     return index;
   }
 
   private getReplacedText(text: string, valueToSearch: string) {
     if (valueToSearch.trim() === '') {
-      this.selectedOptionChange.emit(null);
+      this.selectedOptionChange.emit(undefined);
       return text;
     }
 
